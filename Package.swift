@@ -11,7 +11,7 @@ let package = Package(
         .target(
             name: "Beethoven",
             path: "Source")
-    ]
+    ],
   dependencies: [
     .Package(url: "https://github.com/glaurent/Pitchy.git", majorVersion: 3),
   ]
