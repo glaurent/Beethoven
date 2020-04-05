@@ -15,7 +15,7 @@ final class YINUtil {
   // Slow and eats a lot of CPU, but working
   class func difference2(buffer: [Float]) -> [Float] {
     let bufferHalfCount = buffer.count / 2
-    var resultBuffer = [Float](repeating:0.0, count:bufferHalfCount)
+    var resultBuffer = [Float](repeating: 0.0, count: bufferHalfCount)
 
     for tau in 0 ..< bufferHalfCount {
       for i in 0 ..< bufferHalfCount {
@@ -31,22 +31,24 @@ final class YINUtil {
   // Instruments shows roughly around 22% CPU usage, compared to 95% for difference2
   class func differenceA(buffer: [Float]) -> [Float] {
     let bufferHalfCount = buffer.count / 2
-    var resultBuffer = [Float](repeating:0.0, count:bufferHalfCount)
-    var tempBuffer = [Float](repeating:0.0, count:bufferHalfCount)
-    var tempBufferSq = [Float](repeating:0.0, count:bufferHalfCount)
+    var resultBuffer = [Float](repeating: 0.0, count: bufferHalfCount)
+    var tempBuffer = [Float](repeating: 0.0, count: bufferHalfCount)
+    var tempBufferSq = [Float](repeating: 0.0, count: bufferHalfCount)
     let len = vDSP_Length(bufferHalfCount)
     var vSum: Float = 0.0
 
-    for tau in 0 ..< bufferHalfCount {
-      let bufferTau = UnsafePointer<Float>(buffer).advanced(by: tau)
-      // do a diff of buffer with itself at tau offset
-      vDSP_vsub(buffer, 1, bufferTau, 1, &tempBuffer, 1, len)
-      // square each value of the diff vector
-      vDSP_vsq(tempBuffer, 1, &tempBufferSq, 1, len)
-      // sum the squared values into vSum
-      vDSP_sve(tempBufferSq, 1, &vSum, len)
-      // store that in the result buffer
-      resultBuffer[tau] = vSum
+    buffer.withUnsafeBufferPointer { bufferPointer in
+      for tau in 0 ..< bufferHalfCount {
+        let bufferTau = bufferPointer.baseAddress!.advanced(by: tau)
+        // do a diff of buffer with itself at tau offset
+        vDSP_vsub(buffer, 1, bufferTau, 1, &tempBuffer, 1, len)
+        // square each value of the diff vector
+        vDSP_vsq(tempBuffer, 1, &tempBufferSq, 1, len)
+        // sum the squared values into vSum
+        vDSP_sve(tempBufferSq, 1, &vSum, len)
+        // store that in the result buffer
+        resultBuffer[tau] = vSum
+      }
     }
 
     return resultBuffer
@@ -62,7 +64,7 @@ final class YINUtil {
     let yinBufferSize = frameSize / 2
 
     // power terms calculation
-    var powerTerms = [Float](repeating:0, count:yinBufferSize)
+    var powerTerms = [Float](repeating: 0, count: yinBufferSize)
 
     _ = { (res: Float, element: Float) -> Float in
       res + element * element
