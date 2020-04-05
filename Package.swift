@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
   name: "Beethoven",
   products: [
-        .library(name: "Beethoved", targets: ["Beethoven"]),
+        .library(name: "Beethoven", targets: ["Beethoven"]),
     ],
   dependencies: [
-    .Package(url: "https://github.com/glaurent/Pitchy.git", majorVersion: 3),
+    .package(url: "https://github.com/glaurent/Pitchy.git", majorVersion: 3),
   ],
   targets: [
         .target(
