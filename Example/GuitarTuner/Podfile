@@ -4,6 +4,7 @@ platform :ios, '9.0'
 
 target 'GuitarTuner' do
   pod 'Beethoven', path: '../../'
-  pod 'Hue', '~> 3.0'
-  pod 'Cartography'
+  pod 'Hue', '~> 5.0'
+  pod 'Cartography', '~> 3.0'
 end
+
