@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "Beethoven", targets: ["Beethoven"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/glaurent/Pitchy.git", from: "3.0.0"),
+    .package(url: "https://github.com/glaurent/Pitchy.git", from: "master"),
   ],
   targets: [
         .target(
