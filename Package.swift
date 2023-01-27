@@ -9,7 +9,6 @@ let package = Package(
     ],
   dependencies: [
     .package(url: "https://github.com/glaurent/Pitchy.git", from: "3.0.0"),
-    .product(name: "Pitchy", package: "Pitchy"),
   ],
   targets: [
         .target(
