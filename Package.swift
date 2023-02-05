@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 
 import PackageDescription
 
@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "Beethoven", targets: ["Beethoven"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/glaurent/Pitchy.git", from: "master"),
+    .package(url: "https://github.com/glaurent/Pitchy.git", from: "3.0.1"),
   ],
   targets: [
         .target(
