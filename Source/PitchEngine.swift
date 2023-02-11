@@ -40,7 +40,8 @@ public final class PitchEngine {
   }
 
   public var pitches = PassthroughSubject<Pitch, Swift.Error>()
-  
+  public var belowLevelThreshold = PassthroughSubject<Void, Swift.Error>()
+
   // MARK: - Initialization
 
   public init(config: Config = Config(),
@@ -140,23 +141,24 @@ extension PitchEngine: SignalTrackerDelegate {
             sampleRate: Float(time.sampleRate),
             buffer: transformedBuffer)
           let pitch = try Pitch(frequency: Double(frequency))
+          self.pitches.send(pitch)
 
           DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.delegate?.pitchEngine(self, didReceivePitch: pitch)
-            self.pitches.send(pitch)
           }
         } catch {
+          self.pitches.send(completion: .failure(error))
           DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.delegate?.pitchEngine(self, didReceiveError: error)
-            self.pitches.send(completion: .failure(error))
           }
         }
     }
   }
 
   public func signalTrackerWentBelowLevelThreshold(_ signalTracker: SignalTracker) {
+    belowLevelThreshold.send()
     DispatchQueue.main.async {
       self.delegate?.pitchEngineWentBelowLevelThreshold(self)
     }
