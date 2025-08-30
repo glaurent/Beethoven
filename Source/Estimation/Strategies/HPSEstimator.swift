@@ -31,7 +31,6 @@ final class HPSEstimator: LocationEstimator {
         maxsearch = location
       }
 
-      // swiftlint:disable for_where
       for i in (minIndex + 1)..<maxsearch {
         if spectrum[i] > spectrum[max2] {
           max2 = i

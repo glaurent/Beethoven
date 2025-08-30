@@ -39,7 +39,7 @@ final class YINUtil {
 
     buffer.withUnsafeBufferPointer { bufferPointer in
     for tau in 0 ..< bufferHalfCount {
-        
+
       let bufferTau = buffer.withUnsafeBufferPointer({ $0 }).baseAddress!.advanced(by: tau)
         // do a diff of buffer with itself at tau offset
         vDSP_vsub(buffer, 1, bufferTau, 1, &tempBuffer, 1, len)
@@ -93,13 +93,13 @@ final class YINUtil {
     let fftSetup = vDSP_create_fftsetup(log2n, Int32(kFFTRadix2))
     var audioRealp = [Float](repeating: 0, count: inputCount)
     var audioImagp = [Float](repeating: 0, count: inputCount)
-    var audioTransformedComplex:DSPSplitComplex!
+    var audioTransformedComplex: DSPSplitComplex!
     audioRealp.withUnsafeMutableBufferPointer { realp in
         audioImagp.withUnsafeMutableBufferPointer { imagp in
             audioTransformedComplex = DSPSplitComplex(realp: realp.baseAddress!, imagp: imagp.baseAddress!)
         }
     }
-    
+
     let temp = buffer.withUnsafeBufferPointer({ $0 }).baseAddress!
 
     temp.withMemoryRebound(to: DSPComplex.self, capacity: buffer.count) { (typeConvertedTransferBuffer) -> Void in
@@ -123,13 +123,13 @@ final class YINUtil {
 
     var kernelRealp = [Float](repeating: 0, count: frameSize)
     var kernelImagp = [Float](repeating: 0, count: frameSize)
-    var kernelTransformedComplex:DSPSplitComplex!
+    var kernelTransformedComplex: DSPSplitComplex!
     kernelRealp.withUnsafeMutableBufferPointer { realp in
         kernelImagp.withUnsafeMutableBufferPointer { imagp in
             kernelTransformedComplex = DSPSplitComplex(realp: realp.baseAddress!, imagp: imagp.baseAddress!)
           }
       }
-    
+
     let ktemp = kernel.withUnsafeBufferPointer({ $0 }).baseAddress!
 
     ktemp.withMemoryRebound(to: DSPComplex.self, capacity: kernel.count) { (typeConvertedTransferBuffer) -> Void in
@@ -140,13 +140,12 @@ final class YINUtil {
 
     var yinStyleACFRealp = [Float](repeating: 0, count: frameSize)
     var yinStyleACFImagp = [Float](repeating: 0, count: frameSize)
-    var yinStyleACFComplex:DSPSplitComplex!
+    var yinStyleACFComplex: DSPSplitComplex!
     yinStyleACFRealp.withUnsafeMutableBufferPointer { realp in
         yinStyleACFImagp.withUnsafeMutableBufferPointer { imagp in
             yinStyleACFComplex = DSPSplitComplex(realp: realp.baseAddress!, imagp: imagp.baseAddress!)
           }
       }
-    
 
     for j in 0 ..< inputCount {
       yinStyleACFRealp[j] = audioRealp[j] * kernelRealp[j] - audioImagp[j] * kernelImagp[j]
@@ -155,7 +154,7 @@ final class YINUtil {
 
     vDSP_fft_zrip(fftSetup!, &yinStyleACFComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
-    var resultYinBuffer = [Float](repeating:0.0, count: yinBufferSize)
+    var resultYinBuffer = [Float](repeating: 0.0, count: yinBufferSize)
 
     for j in 0 ..< yinBufferSize {
       resultYinBuffer[j] = powerTerms[0] + powerTerms[j] - 2 * yinStyleACFRealp[j + yinBufferSize - 1]

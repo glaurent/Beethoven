@@ -10,7 +10,7 @@ final class SimpleTransformer: Transformer {
       throw SimpleTransformerError.floatChannelDataIsNil
     }
 
-    let elements = Array.fromUnsafePointer(pointer.pointee, count:Int(buffer.frameLength))
+    let elements = Array.fromUnsafePointer(pointer.pointee, count: Int(buffer.frameLength))
     return Buffer(elements: elements)
   }
 }

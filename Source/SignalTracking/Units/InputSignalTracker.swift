@@ -45,7 +45,7 @@ final class InputSignalTracker: SignalTracker {
     let currentRoute = session.currentRoute
     if currentRoute.outputs.count != 0 {
         for description in currentRoute.outputs {
-            if (description.portType != AVAudioSession.Port.headphones) { // input from speaker if port is not headphones
+            if description.portType != AVAudioSession.Port.headphones { // input from speaker if port is not headphones
                 try session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
             } else { // input from default (headphones)
                 try session.overrideOutputAudioPort(.none)
