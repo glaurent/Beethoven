@@ -31,7 +31,8 @@ final class FFTTransformer: Transformer {
     let temp = transferBuffer.withUnsafeBufferPointer({ $0 }).baseAddress!
     temp.withMemoryRebound(to: DSPComplex.self, capacity: transferBuffer.count) { (typeConvertedTransferBuffer) -> Void in
         vDSP_ctoz(typeConvertedTransferBuffer, 2, &output, 1, vDSP_Length(inputCount))
-    }
+      }
+
 
     vDSP_fft_zrip(fftSetup!, &output, 1, log2n, FFTDirection(FFT_FORWARD))
 

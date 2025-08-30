@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Pitchy",
-        "repositoryURL": "https://github.com/glaurent/Pitchy",
-        "state": {
-          "branch": null,
-          "revision": "71814b85924a5f1016b59f59858bd71ee31e6c72",
-          "version": "3.0.0"
-        }
+  "pins" : [
+    {
+      "identity" : "pitchy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/glaurent/Pitchy",
+      "state" : {
+        "revision" : "71814b85924a5f1016b59f59858bd71ee31e6c72",
+        "version" : "3.0.0"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
